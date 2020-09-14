@@ -1,0 +1,7 @@
+/node_modules
+.prettierignore
+.prettierrc.json
+.eslintrc.json
+.dotenv
+/scss
+/img
