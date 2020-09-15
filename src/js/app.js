@@ -9,10 +9,6 @@ function showErrorToUi() {
   }, 5000);
 }
 
-function clearTimeout() {
-  clearTimeout((document.querySelector('.book--cards').innerHTML = ''), 3000);
-}
-
 function resetUi() {
   document.querySelector('.book--cards').innerHTML = '';
 }
@@ -22,7 +18,7 @@ document.querySelector('.header--form').addEventListener('submit', async (e) => 
 
   const checkFetch = function (response) {
     if (!response.ok) {
-      // console.log(response);
+      console.log(response);
       throw Error(`The status is ${response.status} and check the url ${response.url} to handle errors, this is the error message ${response.statusText}`);
     }
     return response;
@@ -60,6 +56,7 @@ document.querySelector('.header--form').addEventListener('submit', async (e) => 
       document.querySelector('.search').addEventListener('keyup', resetUi);
     });
   } catch (error) {
+    // Not doing anything special with the error, just showing something on the ui
     showErrorToUi();
   }
 });
