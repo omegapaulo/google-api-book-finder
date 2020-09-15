@@ -1,14 +1,17 @@
 document.querySelector('.header--form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const inputValue = document.querySelector('.search').value;
+  // const inputValue = document.querySelector('.search').value;
 
-  const dataObj = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${inputValue}&maxResults=40&projection=full&printType=books`);
+  // const dataObj = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${inputValue}&maxResults=40&projection=full&printType=books`);
+  const dataObj = await fetch('harrypotter.json');
 
   const dataStatus = await dataObj.json();
 
   dataStatus.items.forEach((book) => {
     const bookInfo = book.volumeInfo;
+
+    console.log(bookInfo);
 
     if (bookInfo.description !== undefined) {
       document.querySelector('.book--cards').innerHTML += `
