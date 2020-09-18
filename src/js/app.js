@@ -1,62 +1,43 @@
-function showErrorToUi() {
-  document.querySelector('.book--cards').innerHTML = `
-  <div class="errorStyles">
-  <h2>There was an error from our side, we will fix it soon. Thank you for your understanding</h2>
-  </div>
-  `;
-  setTimeout(() => {
-    document.querySelector('.book--cards').innerHTML = '';
-  }, 5000);
-}
+import Books from './googleBooks.js';
+import * as ui from './ui.js';
 
-function resetUi() {
-  document.querySelector('.book--cards').innerHTML = '';
-}
+// Init classes 0C57-E20F 8622-8E0E
+const books = new Books();
 
-document.querySelector('.header--form').addEventListener('submit', async (e) => {
+const searchBook = document.querySelector('form.header--form');
+
+searchBook.addEventListener('submit', (e) => {
+  // preventing default form behavior
   e.preventDefault();
 
-  const checkFetch = function (response) {
-    if (!response.ok) {
-      console.log(response);
-      throw Error(`The status is ${response.status} and check the url ${response.url} to handle errors, this is the error message ${response.statusText}`);
+  const inputText = searchBook.querySelector('form input[type="text"]');
+
+  const re = /^[a-z0-90-9éèêëùüúàâóòöïíìçäãá][^@£${}\[\]!"#¤%&/()=?]*$/i;
+
+  if (inputText.value !== '') {
+    // Check for reGex in the input
+    if (!re.test(inputText.value)) {
+      // Informe the user fo wrong input and color the border bottom
+      // inputText.style.borderColor = 'red';
+      ui.alertError(inputText);
+      console.log('Not correct');
+    } else {
+      books.getBooks(inputText.value).then((data) => {
+        const dataInfo = data.items;
+        console.log(dataInfo);
+        ui.showBooks(dataInfo);
+      });
     }
-    return response;
-  };
-
-  const inputValue = document.querySelector('.search').value;
-  try {
-    const dataObj = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${inputValue}&maxResults=40&projection=full&printType=books`);
-    // const dataObj = await fetch('harrypotter.json');
-    checkFetch(dataObj);
-
-    const dataStatus = await dataObj.json();
-
-    dataStatus.items.forEach((book) => {
-      const bookInfo = book.volumeInfo;
-
-      if (bookInfo.description !== undefined) {
-        document.querySelector('.book--cards').innerHTML += `
-        <div class="book--card">
-        <img src=${bookInfo.imageLinks.thumbnail} />
-        <div>
-        <p>${bookInfo.title}</p>
-        <ul>
-        <li class="book--title">Author: <span>${bookInfo.authors}</span></li>
-        <li class="book--author">Publisher: <span>${bookInfo.publisher}</span></li>
-        <button  id="btn"><a href="${bookInfo.previewLink}" target="_blank">See this Book</a></button>
-        </ul>
-        </div>
-        <p>${bookInfo.description}</p>
-        </div>
-        
-        `;
-      }
-      document.querySelector('.search').value = '';
-      document.querySelector('.search').addEventListener('keyup', resetUi);
-    });
-  } catch (error) {
-    // Not doing anything special with the error, just showing something on the ui
-    showErrorToUi();
+    // Make Http call form googleBooks.js
+  } else {
+    ui.alertError(inputText);
+    console.log('no input added');
+    // Log enter title or author in the ui through ui.js
   }
+  searchBook.querySelector('input').value = '';
+});
+
+document.querySelector('form input[type="text"]').addEventListener('keyup', () => {
+  ui.removeAlertError(document.querySelector('form.header--form input'));
+  ui.clearBookCard(document.querySelector('.book--cards'));
 });
