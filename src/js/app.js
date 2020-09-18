@@ -41,3 +41,5 @@ document.querySelector('form input[type="text"]').addEventListener('keyup', () =
   ui.removeAlertError(document.querySelector('form.header--form input'));
   ui.clearBookCard(document.querySelector('.book--cards'));
 });
+
+// some changes
