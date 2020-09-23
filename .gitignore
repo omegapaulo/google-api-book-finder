@@ -5,3 +5,6 @@
 .dotenv
 /scss
 /img
+
+# Local Netlify folder
+.netlify
