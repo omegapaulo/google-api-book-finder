@@ -26,9 +26,28 @@ export function clearBookCard(card) {
   card.innerHTML = '';
 }
 
-export function alertError(form) {
+export function alertErrorMsg(form) {
+  books.innerHTML = `
+      <div class="alert--msg">
+        <p>Please only alphabetic characters.</p>
+        </div>
+    `;
   form.classList.add('error');
 }
+
+// BUG Redo this code
+export function alertError(form) {
+  books.innerHTML = `
+  <div class="alert--msg">
+  <p>Please enter a book author or a title.</p>
+  </div>
+  `;
+  form.classList.add('error');
+}
+setTimeout(() => {
+  // TODO this code is not working well
+  document.querySelector('input').classList.remove('error');
+}, 3000);
 
 export function removeAlertError(form) {
   form.classList.remove('error');
