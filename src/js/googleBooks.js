@@ -5,7 +5,6 @@ export default class Books {
 
   static checkFetch(response) {
     if (!response.ok) {
-      // console.log(response);
       throw Error(`The status is ${response.status} and check the url ${response.url} to handle errors, this is the error message ${response.statusText}`);
     }
     return response;
@@ -21,8 +20,6 @@ export default class Books {
       Books.checkFetch(this.bookRequests);
 
       this.booksInfo = await this.bookRequests.json();
-
-      console.log(this.booksInfo);
     } catch (error) {
       // Log error for the user through ui.js
       console.log(error);
